@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	firebase "firebase.google.com/go"
+	"firebase.google.com/go/messaging"
 	"google.golang.org/api/option"
 )
 
@@ -42,6 +43,27 @@ func prepareGateway() (*firebase.App, error) {
 	}
 
 	return app, nil
+}
+
+func (f FirebaseApp) send(messages []messaging.Message) error {
+	ctx := context.Background()
+	client, err := f.App.Messaging(ctx)
+
+	if err != nil {
+		return fmt.Errorf("An error happened while retrieving the clients: %s", err.Error())
+	}
+
+	for i := 0; i <= len(messages); i++ {
+		response, err := client.Send(ctx, &messages[i])
+
+		if err != nil {
+			fmt.Println("Error occurred while sending message: %s", err.Error)
+			fmt.Println(response)
+		}
+	}
+
+	fmt.Println("Push was send")
+	return nil
 }
 
 // Init the firebase App
