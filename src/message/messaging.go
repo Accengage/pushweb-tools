@@ -6,10 +6,14 @@ import (
 	messaging "firebase.google.com/go/messaging"
 )
 
+type Key struct {
+	UserAuth   string `json:"auth"`
+	UserPubKey string `json:"p256dh"`
+}
+
 type User struct {
-	Token      string
-	UserAuth   string
-	UserPubKey string
+	Token string `json:"endpoint"`
+	Keys  Key    `json:"keys"`
 }
 
 type Message struct {
