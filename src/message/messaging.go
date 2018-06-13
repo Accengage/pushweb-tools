@@ -1,6 +1,7 @@
 package message
 
 import (
+	"encoding/json"
 	"fmt"
 
 	messaging "firebase.google.com/go/messaging"
@@ -17,17 +18,24 @@ type User struct {
 }
 
 type Message struct {
-	Title    string
-	Message  string
-	Icon     string
-	UserInfo User
+	Title    string `json:"title"`
+	Message  string `json:"body"`
+	Icon     string `json:"icon"`
+	UserInfo User   `json:"-"`
 }
 
-func (m Message) PrepareLegacyPayload() {
+// MarshalPayload convert the Message struct to a JSON
+func (m Message) MarshalPayload() ([]byte, error) {
+	json, err := json.Marshal(m)
 
+	if err != nil {
+		return nil, fmt.Errorf("An error occured while marshaling the Message struct %v", err)
+	}
+
+	return json, nil
 }
 
-// prepare payload for fcm
+// PreparePayload for fcm
 func (m Message) PreparePayload(tokens []string) []*messaging.Message {
 	length := len(tokens)
 

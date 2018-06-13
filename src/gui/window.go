@@ -13,7 +13,7 @@ var (
 	// textFields of the UI
 	title *ui.Entry
 	body  *ui.Entry
-	icon  *ui.Entry
+	image *ui.Entry
 	token *ui.Entry
 	auth  *ui.Entry
 	key   *ui.Entry
@@ -34,7 +34,7 @@ func designUI() {
 	// fields
 	title = ui.NewEntry()
 	body = ui.NewEntry()
-	icon = ui.NewEntry()
+	image = ui.NewEntry()
 	token = ui.NewEntry()
 	auth = ui.NewEntry()
 	key = ui.NewEntry()
@@ -61,8 +61,8 @@ func appendBox() *ui.Box {
 	box.Append(ui.NewLabel("Body"), false)
 	box.Append(body, false)
 
-	box.Append(ui.NewLabel("Icon"), false)
-	box.Append(icon, false)
+	box.Append(ui.NewLabel("Image"), false)
+	box.Append(image, false)
 
 	// stack for the token part
 	tokenBox := ui.NewVerticalBox()
@@ -92,7 +92,7 @@ func handleClick(*ui.Button) {
 	m := message.Message{
 		Title:   title.Text(),
 		Message: body.Text(),
-		Icon:    icon.Text(),
+		Icon:    image.Text(),
 		UserInfo: message.User{
 			Token: token.Text(),
 			Keys: message.Key{

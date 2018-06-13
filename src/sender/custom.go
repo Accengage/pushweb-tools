@@ -18,6 +18,12 @@ const (
 // SendWebPush Because we don't use the VAPID...
 func (GCMSender) SendWebPush(m message.Message) error {
 	fmt.Println("Send using legacy sender")
+	message, mErr := m.MarshalPayload()
+
+	if mErr != nil {
+		return fmt.Errorf("Unable to send push, Message is badly format")
+	}
+
 	json, err := json.Marshal(m.UserInfo)
 
 	if err != nil {
@@ -32,7 +38,8 @@ func (GCMSender) SendWebPush(m message.Message) error {
 		return fmt.Errorf("Unable to get the subscription %v", err)
 	}
 
-	res, sendErr := webpush.Send(nil, sub, "Hey this is a push", gcmKey)
+	str := string(message[:])
+	res, sendErr := webpush.Send(nil, sub, str, gcmKey)
 
 	if sendErr != nil {
 		return fmt.Errorf("Error while sending push notification %v", sendErr)
