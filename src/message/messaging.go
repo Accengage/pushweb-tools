@@ -6,13 +6,25 @@ import (
 	messaging "firebase.google.com/go/messaging"
 )
 
-type Message struct {
-	Title   string
-	Message string
-	Icon    string
+type User struct {
+	Token      string
+	UserAuth   string
+	UserPubKey string
 }
 
-func (m Message) PreparePayload(tokens []string) []messaging.Message {
+type Message struct {
+	Title    string
+	Message  string
+	Icon     string
+	UserInfo User
+}
+
+func (m Message) PrepareLegacyPayload() {
+
+}
+
+// prepare payload for fcm
+func (m Message) PreparePayload(tokens []string) []*messaging.Message {
 	length := len(tokens)
 
 	if length == 0 {
@@ -21,9 +33,9 @@ func (m Message) PreparePayload(tokens []string) []messaging.Message {
 	}
 
 	// use slice to create the array at runtime with the desired length
-	messages := make([]messaging.Message, length)
+	messages := make([]*messaging.Message, length)
 	for i := 0; i < length; i++ {
-		messages = append(messages, messaging.Message{
+		messages = append(messages, &messaging.Message{
 			Webpush: &messaging.WebpushConfig{
 				Notification: &messaging.WebpushNotification{
 					Title: m.Title,

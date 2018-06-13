@@ -3,17 +3,13 @@ package main
 import (
 	"fmt"
 	"gui"
-	"sender"
 )
 
 var (
-	firebaseApp = sender.FirebaseApp{}
-	appGui      = gui.Gui{}
+	appGui = gui.Gui{}
 )
 
 func main() {
-	// init firebase admin
-	firebaseApp.Init()
 	appGui.MakeUI()
 	fmt.Println("init !")
 	// Example of usage of the sender

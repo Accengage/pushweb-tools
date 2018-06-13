@@ -1,8 +1,8 @@
 package gui
 
 import (
-	"fmt"
 	"message"
+	"sender"
 
 	"github.com/andlabs/ui"
 )
@@ -14,6 +14,8 @@ var (
 	body  *ui.Entry
 	icon  *ui.Entry
 	token *ui.Entry
+	// Firebase
+	firebaseApp = sender.FirebaseApp{}
 )
 
 type Gui struct{}
@@ -33,10 +35,16 @@ func designUI() {
 	box := ui.NewVerticalBox()
 
 	// Append the element on the box
-	box.Append(ui.NewLabel("Push web tools"), false)
+	box.Append(ui.NewLabel("Title"), false)
 	box.Append(title, false)
+
+	box.Append(ui.NewLabel("Body"), false)
 	box.Append(body, false)
+
+	box.Append(ui.NewLabel("Icon"), false)
 	box.Append(icon, false)
+
+	box.Append(ui.NewLabel("Token"), false)
 	box.Append(token, false)
 	box.Append(submit, true)
 
@@ -49,8 +57,6 @@ func designUI() {
 
 // Handle the click
 func handleClick(*ui.Button) {
-	fmt.Println("click on button")
-
 	// Retrieve the text of the gui
 	m := message.Message{
 		Title:   title.Text(),
@@ -61,7 +67,10 @@ func handleClick(*ui.Button) {
 	userToken := token.Text()
 
 	tokens := [1]string{userToken}
-	m.PreparePayload(tokens[:])
+	payloads := m.PreparePayload(tokens[:])
+
+	// send the payload
+	go firebaseApp.Send(payloads)
 }
 
 // Create the window
@@ -74,6 +83,8 @@ func createWindow(b *ui.Box) {
 
 // Create the UI
 func (Gui) MakeUI() {
+	// Init the firebase app
+	firebaseApp.Init()
 	err := ui.Main(designUI)
 
 	if err != nil {

@@ -11,9 +11,11 @@ import (
 	"google.golang.org/api/option"
 )
 
-type FirebaseApp struct {
-	App *firebase.App
-}
+type FirebaseApp struct{}
+
+var (
+	app *firebase.App
+)
 
 // Get the executable Path
 func getExecPath() (string, error) {
@@ -45,20 +47,21 @@ func prepareGateway() (*firebase.App, error) {
 	return app, nil
 }
 
-func (f FirebaseApp) send(messages []messaging.Message) error {
+// Send the message
+func (f FirebaseApp) Send(messages []*messaging.Message) error {
 	ctx := context.Background()
-	client, err := f.App.Messaging(ctx)
+	client, err := app.Messaging(ctx)
 
 	if err != nil {
+		fmt.Println("an error happened", err.Error())
 		return fmt.Errorf("An error happened while retrieving the clients: %s", err.Error())
 	}
 
-	for i := 0; i <= len(messages); i++ {
-		response, err := client.Send(ctx, &messages[i])
+	for i := 1; i <= len(messages)-1; i++ {
+		_, err := client.Send(ctx, messages[i])
 
 		if err != nil {
-			fmt.Println("Error occurred while sending message: %s", err.Error)
-			fmt.Println(response)
+			fmt.Println("Error occurred while sending message: ", err.Error())
 		}
 	}
 
@@ -68,7 +71,7 @@ func (f FirebaseApp) send(messages []messaging.Message) error {
 
 // Init the firebase App
 func (f FirebaseApp) Init() {
-	app, err := prepareGateway()
+	pAapp, err := prepareGateway()
 
 	if err != nil {
 		fmt.Printf("FCM App stop here: %s", err.Error())
@@ -76,5 +79,5 @@ func (f FirebaseApp) Init() {
 		return
 	}
 
-	f.App = app
+	app = pAapp
 }
