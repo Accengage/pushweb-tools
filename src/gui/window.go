@@ -2,6 +2,7 @@ package gui
 
 import (
 	"fmt"
+	"math/rand"
 	"message"
 	"sender"
 
@@ -17,8 +18,10 @@ var (
 	token *ui.Entry
 	auth  *ui.Entry
 	key   *ui.Entry
+	pic   *ui.Entry
 	// Checkbox
 	checkbox *ui.Checkbox
+	a4sb     *ui.Checkbox
 	// Button
 	submit *ui.Button
 	// Firebase
@@ -38,10 +41,12 @@ func designUI() {
 	token = ui.NewEntry()
 	auth = ui.NewEntry()
 	key = ui.NewEntry()
+	pic = ui.NewEntry()
 	// button
 	submit = ui.NewButton("Submit")
 	// Checkbox
 	checkbox = ui.NewCheckbox("Legacy GCM provider")
+	a4sb = ui.NewCheckbox("Button")
 	// Append
 	box := appendBox()
 	// event on button
@@ -64,6 +69,12 @@ func appendBox() *ui.Box {
 	box.Append(ui.NewLabel("Image"), false)
 	box.Append(image, false)
 
+	box.Append(ui.NewLabel("Buttons Push"), false)
+	box.Append(a4sb, false)
+
+	box.Append(ui.NewLabel("Big pictures"), false)
+	box.Append(pic, false)
+
 	// stack for the token part
 	tokenBox := ui.NewVerticalBox()
 
@@ -83,16 +94,13 @@ func appendBox() *ui.Box {
 	return box
 }
 
-// Handle the click
-func handleClick(*ui.Button) {
-	// Get the value of the checkbox
-	senderPreference := checkbox.Checked()
-
-	// Retrieve the text of the gui
+// build message
+func buildMessage() message.Message {
 	m := message.Message{
-		Title:   title.Text(),
-		Message: body.Text(),
-		Icon:    image.Text(),
+		Title:    title.Text(),
+		Message:  body.Text(),
+		Icon:     image.Text(),
+		Pictures: pic.Text(),
 		UserInfo: message.User{
 			Token: token.Text(),
 			Keys: message.Key{
@@ -102,6 +110,33 @@ func handleClick(*ui.Button) {
 		},
 	}
 
+	a4sbchecked := a4sb.Checked()
+	if a4sbchecked {
+		arr := make([]message.A4Sb, 2)
+		arr[0] = message.A4Sb{
+			Title: "ok",
+			Icon:  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa3zmeMGSXFgQwfJ5T9Vix-qq1Mdeq1TIjmXfoOrAhdx9M9QD3PQ",
+			ID:    rand.Intn(100),
+		}
+
+		arr[1] = message.A4Sb{
+			Title: "no",
+			Icon:  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYfX1gX8_u70NS95b1BqoyT6mlWdcHttEtlm0UNx856GZGtJCB",
+			ID:    rand.Intn(100),
+		}
+
+		m.Button = arr
+	}
+
+	return m
+}
+
+// Handle the click
+func handleClick(*ui.Button) {
+	// Get the value of the checkbox
+	senderPreference := checkbox.Checked()
+	// Retrieve the text of the gui
+	m := buildMessage()
 	if senderPreference {
 		go func() {
 			err := gcmSender.SendWebPush(m)

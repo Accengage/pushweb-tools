@@ -17,10 +17,18 @@ type User struct {
 	Keys  Key    `json:"keys"`
 }
 
+type A4Sb struct {
+	Title string `json:"title"`
+	Icon  string `json:"icon"`
+	ID    int    `json:"id"`
+}
+
 type Message struct {
 	Title    string `json:"title"`
 	Message  string `json:"body"`
 	Icon     string `json:"icon"`
+	Button   []A4Sb `json:"a4sb"`
+	Pictures string `json:"a4sbigpicture"`
 	UserInfo User   `json:"-"`
 }
 
