@@ -27,6 +27,17 @@ tempGcmURL = https://gcm-http.googleapis.com/gcm
 tempGcmURL = "https://fcm.googleapis.com/fcm/send"
 ```
 
+## Configuration
+
+Update the **gcmKey** variable by your GCM Key (android sender id) / (server key) which you can retrieve from the firebase console. Update it like so
+
+```
+// File is in src/sender/custom.go
+const (
+	gcmKey string = "your key"
+)
+```
+
 ## Build
 
 Build the command ```go build cheesy.go```
