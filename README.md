@@ -4,16 +4,18 @@ This is just a prototype app that help you to send push either by using the GCM 
 
 ## Installation
 
-Clone this repo, make sure that your gopath is set.
-Install the dependencies by running this command from the root of the project
+Clone this repo, make sure that you have set the **GOPATH**.
+Install the following dependencies using the **go get** command
 
 ```
-go get ./...
+https://github.com/andlabs/ui
+https://github.com/firebase/firebase-admin-go
+https://github.com/gauntface/web-push-go
 ```
 
 ## Trick
 
-The legacy GCM Sender (no VAPID) use the archive gauntface sender (webpush package). However as the library use the previous endpoint. Please update the dependency like below 
+The legacy GCM Sender (no VAPID) use the gautface sender dependencies. (Note that the repo is archive however it does the work...). As the lib is unmaintained we need to update the **tempGcmURL** like below
 
 - old: 
 ```
@@ -29,3 +31,7 @@ tempGcmURL = "https://fcm.googleapis.com/fcm/send"
 
 Build the command ```go build cheesy.go```
 Run the project by using the command ```./cheesy```
+
+## Note
+
+If executing the **cheesy** executable give you a **Permission denied** error please use the command ```chmod +x cheesy``` and try it again
