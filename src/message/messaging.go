@@ -23,13 +23,22 @@ type A4Sb struct {
 	ID    int    `json:"id"`
 }
 
+type CustomParams struct {
+	A4Sicon   string   `json:"a4sicon"`
+	A4Sid     string   `json:"a4sId"`
+	A4Surl    string   `json:"url"`
+	A4Sparams []string `json:"params"`
+}
+
 type Message struct {
-	Title    string `json:"title"`
-	Message  string `json:"body"`
-	Icon     string `json:"icon"`
-	Button   []A4Sb `json:"a4sb"`
-	Pictures string `json:"a4sbigpicture"`
-	UserInfo User   `json:"-"`
+	Title    string       `json:"title"`
+	Message  string       `json:"body"`
+	Icon     string       `json:"icon"`
+	Button   []A4Sb       `json:"a4sb"`
+	Pictures string       `json:"a4sbigpicture"`
+	Cparams  CustomParams `json:"onClick"`
+	A4Sid    string       `json:"a4sid"`
+	UserInfo User         `json:"-"`
 }
 
 // MarshalPayload convert the Message struct to a JSON

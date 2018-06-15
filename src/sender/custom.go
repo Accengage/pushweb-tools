@@ -12,7 +12,7 @@ import (
 type GCMSender struct{}
 
 const (
-	gcmKey string = "YOUR_ANDROID_SENDER_ID_KEY"
+	gcmKey string = "YOUR_ANDROID_SENDER_ID"
 )
 
 // SendWebPush Because we don't use the VAPID...

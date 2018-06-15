@@ -12,13 +12,16 @@ import (
 var (
 	window *ui.Window
 	// textFields of the UI
-	title *ui.Entry
-	body  *ui.Entry
-	image *ui.Entry
-	token *ui.Entry
-	auth  *ui.Entry
-	key   *ui.Entry
-	pic   *ui.Entry
+	title   *ui.Entry
+	body    *ui.Entry
+	image   *ui.Entry
+	token   *ui.Entry
+	auth    *ui.Entry
+	key     *ui.Entry
+	pic     *ui.Entry
+	a4sId   *ui.Entry
+	a4sicon *ui.Entry
+	a4surl  *ui.Entry
 	// Checkbox
 	checkbox *ui.Checkbox
 	a4sb     *ui.Checkbox
@@ -42,6 +45,9 @@ func designUI() {
 	auth = ui.NewEntry()
 	key = ui.NewEntry()
 	pic = ui.NewEntry()
+	a4sId = ui.NewEntry()
+	a4sicon = ui.NewEntry()
+	a4surl = ui.NewEntry()
 	// button
 	submit = ui.NewButton("Submit")
 	// Checkbox
@@ -74,6 +80,15 @@ func appendBox() *ui.Box {
 
 	box.Append(ui.NewLabel("Big pictures"), false)
 	box.Append(pic, false)
+
+	box.Append(ui.NewLabel("a4sid"), false)
+	box.Append(a4sId, false)
+
+	box.Append(ui.NewLabel("a4sicon"), false)
+	box.Append(a4sicon, false)
+
+	box.Append(ui.NewLabel("a4surl"), false)
+	box.Append(a4surl, false)
 
 	// stack for the token part
 	tokenBox := ui.NewVerticalBox()
@@ -108,6 +123,13 @@ func buildMessage() message.Message {
 				UserPubKey: key.Text(),
 			},
 		},
+		Cparams: message.CustomParams{
+			A4Sicon:   a4sicon.Text(),
+			A4Sid:     a4sId.Text(),
+			A4Surl:    a4surl.Text(),
+			A4Sparams: []string{"|pid|"},
+		},
+		A4Sid: a4sId.Text(),
 	}
 
 	a4sbchecked := a4sb.Checked()
