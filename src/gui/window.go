@@ -127,7 +127,7 @@ func buildMessage() message.Message {
 			A4Sicon:   a4sicon.Text(),
 			A4Sid:     a4sId.Text(),
 			A4Surl:    a4surl.Text(),
-			A4Sparams: []string{"|pid|"},
+			A4Sparams: []string{"|pid|", "|lat|", "|lon|"},
 		},
 		A4Sid: a4sId.Text(),
 	}
@@ -202,4 +202,5 @@ func (Gui) MakeUI() {
 	if err != nil {
 		panic(err)
 	}
+
 }
